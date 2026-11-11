@@ -195,18 +195,35 @@ cd D:\dsh-plugin\dsh-workspace-memory
 
 ## 4. 上架插件市场
 
-DSH 的插件市场（`dshmarket` / Plugins → Discover）**不直接搜 npm**，它读的是策展目录 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 生成的 `plugins.json`。目录条目把插件映射到 npm 包名。
+DSH 的插件市场（`dshmarket` / Plugins → Discover）**不直接搜 npm**，它读的是策展目录 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 生成的 `plugins.json`。目录条目按**仓库**收录，安装目标再映射到 npm 包名或 `tarball`。
 
-所以上架 = 往那个仓库提一个 PR，加**一条**条目，通常一天内同步到市场和网站。
+上架 = 往那个仓库提一个 PR，**只加一个文件**：
 
-步骤：
+```
+data/plugins/yusheng-zhu12__dsh-workspace-memory.yml
+```
 
-1. 打开 <https://github.com/awesome-dsh-plugin/awesome-dsh-plugin>，先读它的 `README` / `CONTRIBUTING`，照现有条目的格式写（不同时间格式可能变，以仓库现状为准）。
-2. 条目里至少要能对上：显示名、npm 包名（`@yusheng-zhu12/dsh-workspace-memory`）、GitHub 仓库地址、一句话描述、分类/标签。
-3. 提交 PR，说明这是 DSH Host 插件、已发布到 npm、仓库公开。
-4. 合并后等 CI 刷新 `plugins.json`，然后在 DSH 里 **Plugins → Discover** 搜索验证。
+内容（已按该仓库 `contributing.md` 校对过；本机另存于 `D:\dsh-plugin\market-pr\`）：
 
-> 本会话没有可用的网络抓取工具（`web_fetch` 的 provider 未注册），因此没能在这里核对目录条目的确切字段名。请以仓库里现有条目的实际写法为准；字段拼错会被 CI 拒绝。
+```yaml
+url: https://github.com/yusheng-zhu12/dsh-workspace-memory
+name: yusheng-zhu12/dsh-workspace-memory
+category: memory
+description:
+  en: Workspace-scoped memory for DeepSeek Harness that keeps one readable Markdown file per workspace and injects a short index into later conversations; replacing a note this conversation has not read is refused, each change keeps one backup, and limits change only after the user confirms.
+  zh: 为 DeepSeek Harness 提供工作区级记忆：每个工作区一份可读的 Markdown 文件，并向后续对话注入一段简短索引；覆盖本会话未读过的笔记会被拒绝，每次修改保留一份备份，上限变更需用户确认。
+tarball: https://github.com/yusheng-zhu12/dsh-workspace-memory/releases/download/v0.2.0/yusheng-zhu12-dsh-workspace-memory-0.2.0.tgz
+```
+
+要点（来自 `contributing.md`）：
+
+- **两个 README 由脚本生成**，不要手改；条目文件永不冲突，改 README 反而会撞。
+- `description.en` 必填；描述里出现半角 `: ` 必须加引号，否则 YAML 解析失败。
+- 仓库要求：`package.json` 声明 `dsh.bundle`、有真实代码、**创建满 1 天**、带 `dsh-plugin` topic。
+- 不发 npm 也可以：把预构建 tarball 附到 Release，用 `tarball:` 指向它（本插件当前就是这条路线）。
+- 评审会**对着代码核对描述**，夸大是主要打回原因；重复条目按「谁更好」判定，不是先来后到。
+
+步骤与 PR 文案见 `D:\dsh-plugin\market-pr\STEPS.md` 与 `PR.md`。
 
 另外，用户也可以不依赖市场，直接加索引源：
 
