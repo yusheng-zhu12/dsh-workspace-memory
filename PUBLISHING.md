@@ -121,7 +121,28 @@ powershell -ExecutionPolicy Bypass -File D:\dsh-plugin\dsh-workspace-memory\publ
 
 脚本会依次：跑测试 → 检查是否已登录（未登录会打印一个 npm 登录链接，在浏览器里完成）→ 发布。
 
-### 3.2 手动等价步骤
+### 3.2 账号开了两步验证（2FA）怎么办
+
+npm 要求发布必须满足 2FA，否则返回：
+
+```
+403 Forbidden - PUT https://registry.npmjs.org/<包名> - Two-factor authentication
+or granular access token with bypass 2fa enabled is required to publish packages.
+```
+
+**用一次性验证码发布**（当前唯一稳妥的做法）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File D:\dsh-plugin\dsh-workspace-memory\publish.ps1 -Otp 123456
+```
+
+`123456` 换成认证器里当下的 6 位数字，**每次发布都要重新取**。
+
+> ⚠️ 以前常用的"生成一个勾了 **Bypass two-factor authentication** 的 Granular Access Token 长期复用"这条路**正在被 npm 废弃**（见 GitHub changelog 2026-07-08《npm install-time security and GAT bypass2FA deprecation》）。即使你的账号现在还能勾，也不要把它写进脚本或 CI 的长期方案；以 `-Otp` 为准。
+>
+> 自动化场景（CI）请改用 npm 的 **Trusted Publishing**（在 npm 包里绑定 GitHub Actions 的 OIDC 身份），而不是长期令牌。
+
+### 3.3 手动等价步骤
 
 ```powershell
 # 变量：DSH 自带的 node 与 pnpm
@@ -135,15 +156,14 @@ $pnpm = "C:\Users\TJ_ZYS\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm
 & $node $pnpm whoami
 & $node $pnpm view dsh-workspace-memory version   # 报 404 说明包名可用
 
-# 发布
+# 发布（账号开了 2FA 时加 --otp <当时代码>）
 cd D:\dsh-plugin\dsh-workspace-memory
 & $node $pnpm publish --access public --no-git-checks
 ```
 
-> 也可以用令牌代替登录：在 npmjs.com → **Access Tokens** → **Generate New Token** 生成一个带 *Publish* 权限的令牌，写进 `%USERPROFILE%\.npmrc` 一行
-> `//registry.npmjs.org/:_authToken=你的令牌`，然后直接跑发布命令。
+> 用 `pnpm login` 登录后，发布时若仍报 2FA，就在命令末尾加 `--otp 123456`（认证器里的 6 位数字）。
 
-### 3.3 验证
+### 3.4 验证
 
 ```powershell
 & $node $pnpm view dsh-workspace-memory version

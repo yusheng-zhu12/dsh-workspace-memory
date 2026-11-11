@@ -3,11 +3,16 @@
 # This machine has no `npm` on PATH — only the Node and pnpm that ship inside
 # DeepSeek Harness — so the script drives pnpm directly with absolute paths.
 #
-# Usage (from any directory):
+# Usage:
 #   powershell -ExecutionPolicy Bypass -File D:\dsh-plugin\dsh-workspace-memory\publish.ps1
+#   powershell -ExecutionPolicy Bypass -File ...\publish.ps1 -Otp 123456
 #
-# The first run opens the npm sign-in page; finish it in the browser and come
-# back. Later runs reuse the stored token in %USERPROFILE%\.npmrc.
+# Accounts with two-factor authentication need either `-Otp <6-digit code>` or a
+# token created with "Bypass two-factor authentication" enabled (see PUBLISHING.md).
+
+param(
+  [string]$Otp
+)
 
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
@@ -36,8 +41,19 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Signed in as: $(& $node $pnpm whoami)"
 
 Write-Host "`n[3/3] Publishing"
-& $node $pnpm publish --access public --no-git-checks
-if ($LASTEXITCODE -ne 0) { throw 'Publish failed.' }
+$publishArgs = @('publish', '--access', 'public', '--no-git-checks')
+if ($Otp) { $publishArgs += @('--otp', $Otp) }
+& $node $pnpm @publishArgs
+$code = $LASTEXITCODE
+
+if ($code -ne 0) {
+  Write-Host ''
+  Write-Host 'Publish failed.' -ForegroundColor Yellow
+  Write-Host 'If the error mentions "Two-factor authentication", npm wants a one-time code:' -ForegroundColor Yellow
+  Write-Host '  rerun with a fresh 6-digit code from your authenticator:  -Otp 123456'
+  Write-Host 'Long-lived tokens that bypass 2FA are being deprecated by npm, so prefer -Otp.'
+  throw 'Publish failed.'
+}
 
 Write-Host "`nDone. Verify with:"
 Write-Host "  & `"$node`" `"$pnpm`" view $($package.name) version"
