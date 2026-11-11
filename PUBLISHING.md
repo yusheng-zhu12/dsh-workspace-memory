@@ -111,24 +111,45 @@ git push && git push --tags
 
 市场与 `dsh plugin add` 都按 npm 包名解析，所以**先发布 npm**。
 
+> **本机没有 `npm` 命令。** DeepSeek Harness 自带的是 `node.exe` 和一个 pnpm 包，没有全局 npm，所以 `npm login` / `npm publish` 都会报“无法将 npm 项识别为 cmdlet”。用下面的一键脚本（内部调用自带的 node + pnpm）即可，不需要额外安装 Node。
+
+### 3.1 一键脚本
+
 ```powershell
-# 一次性：登录（需要 npm 账号，开启 2FA 时用 --otp）
-npm login
+powershell -ExecutionPolicy Bypass -File D:\dsh-plugin\dsh-workspace-memory\publish.ps1
+```
 
-# 确认包名没被占用
-npm view dsh-workspace-memory version
+脚本会依次：跑测试 → 检查是否已登录（未登录会打印一个 npm 登录链接，在浏览器里完成）→ 发布。
 
-# 发布（package.json 已设 publishConfig.access=public）
+### 3.2 手动等价步骤
+
+```powershell
+# 变量：DSH 自带的 node 与 pnpm
+$node = "C:\Users\TJ_ZYS\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe"
+$pnpm = "C:\Users\TJ_ZYS\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\bin\pnpm.mjs"
+
+# 一次性：登录（会打印一个 https://www.npmjs.com/login?next=... 链接，浏览器里完成）
+& $node $pnpm login
+
+# 确认身份与包名
+& $node $pnpm whoami
+& $node $pnpm view dsh-workspace-memory version   # 报 404 说明包名可用
+
+# 发布
+cd D:\dsh-plugin\dsh-workspace-memory
 & $node $pnpm publish --access public --no-git-checks
 ```
 
-验证：
+> 也可以用令牌代替登录：在 npmjs.com → **Access Tokens** → **Generate New Token** 生成一个带 *Publish* 权限的令牌，写进 `%USERPROFILE%\.npmrc` 一行
+> `//registry.npmjs.org/:_authToken=你的令牌`，然后直接跑发布命令。
+
+### 3.3 验证
 
 ```powershell
-npm view dsh-workspace-memory version dist.tarball
+& $node $pnpm view dsh-workspace-memory version
 ```
 
-之后更新只需递增 `version` 再 `pnpm publish`；`npm view` 里能看到新版本就说明生效。
+返回 `0.1.7` 即发布成功。之后更新只需递增 `version` 再跑同一脚本。
 
 > 如果包名被占用，改成 `@<scope>/dsh-workspace-memory` 发布，并把 `cordis.patch.yml` 的 `name` 一起改掉。
 
