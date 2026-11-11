@@ -61,19 +61,39 @@ lib/*.js  locale/en.json  locale/zh.json
 
 ## 2. 上传到 GitHub
 
+仓库已经初始化好（`main` 分支、首个提交、`v0.1.7` 标签、`origin` 已指向 `yusheng-zhu12/dsh-workspace-memory`），所以只剩推送。
+
+### 2.1 在网页上建空仓库（英文界面）
+
+1. 右上角 **+** → **New repository**；
+2. **Repository name** 填 `dsh-workspace-memory`；
+3. **Description**（可选）填一句：`Workspace-scoped durable memory for DeepSeek Harness`；
+4. 选 **Public**；
+5. **不要**勾选 *Add a README file*、*Add .gitignore*、*Choose a license*（本地已有，勾了会冲突）；
+6. 点 **Create repository**。
+
+### 2.2 推送本地提交
+
 ```powershell
 cd D:\dsh-plugin\dsh-workspace-memory
-git init -b main
-git add .
-git commit -m "feat: dsh-workspace-memory v0.1.0"
-git remote add origin https://github.com/<owner>/dsh-workspace-memory.git
-git push -u origin main
+git push -u origin main --tags
 ```
 
-然后在 GitHub 仓库页面：
+第一次推送会弹出 GitHub 登录（Git Credential Manager）。若没有弹窗，就用 **Settings → Developer settings → Personal access tokens** 建一个带 `repo` 权限的 token，在提示输入密码时粘贴 token（GitHub 不接受账号密码）。
 
-1. **About → Topics** 加上：`deepseek-harness`、`dsh`、`dsh-plugin`、`memory`、`cordis`、`agent-memory`；
-2. 新建 Release，tag 用 `v0.1.0`，正文可直接抄 `CHANGELOG.md` 对应小节，附件上传 `dist/*.tgz`（方便别人离线安装）。
+### 2.3 完善仓库信息
+
+在仓库页面右侧 **About** 旁的齿轮 → 填 **Description**，在 **Topics** 里加：
+`deepseek-harness`、`dsh`、`dsh-plugin`、`memory`、`cordis`、`agent-memory`。
+
+### 2.4 建 Release
+
+1. 仓库右侧 **Releases** → **Draft a new release**；
+2. **Choose a tag** 选已存在的 `v0.1.7`（不要新建）；
+3. **Release title** 填 `v0.1.7`；
+4. 描述里粘贴 `CHANGELOG.md` 的 `## [0.1.7]` 小节；
+5. **Attach binaries** 上传 `dist\dsh-workspace-memory-0.1.7.tgz`（方便离线安装）；
+6. 点 **Publish release**。
 
 之后每次更新：
 
@@ -81,7 +101,7 @@ git push -u origin main
 # 改代码 → 改 CHANGELOG → 升 version → 测试 → 打包
 git add -A
 git commit -m "fix: ..."
-git tag v0.1.1
+git tag v0.1.8
 git push && git push --tags
 ```
 
