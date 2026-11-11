@@ -138,9 +138,25 @@ powershell -ExecutionPolicy Bypass -File D:\dsh-plugin\dsh-workspace-memory\publ
 
 `123456` 换成认证器里当下的 6 位数字，**每次发布都要重新取**。
 
-> ⚠️ 以前常用的"生成一个勾了 **Bypass two-factor authentication** 的 Granular Access Token 长期复用"这条路**正在被 npm 废弃**（见 GitHub changelog 2026-07-08《npm install-time security and GAT bypass2FA deprecation》）。即使你的账号现在还能勾，也不要把它写进脚本或 CI 的长期方案；以 `-Otp` 为准。
->
-> 自动化场景（CI）请改用 npm 的 **Trusted Publishing**（在 npm 包里绑定 GitHub Actions 的 OIDC 身份），而不是长期令牌。
+#### 为什么不再推荐"长期令牌"
+
+npm 正在分两步废弃 2FA-bypass 令牌（Granular Access Token 里勾 *Bypass two-factor authentication* 的那种），依据是 npm v12 公告《install-time security defaults and GAT bypass 2FA deprecation》：
+
+| 时间 | 变化 |
+|---|---|
+| 2026 年 8 月起 | 这类令牌**不能再跳过 2FA 做账号类操作**：创建/删除令牌、改密码/邮箱/2FA、改包权限或维护者、管理组织与团队 |
+| 2027 年 1 月前后 | 这类令牌**不能再直接发布**；只剩"读取私有包"和"暂存发布"（staged publish），发布要由人用 2FA 批准 |
+
+也就是说：现在（2026 年 11 月）用令牌发布**还能用**，但两个月后就会失效，不值得写进流程。以 `-Otp` 为准。
+
+#### 自动化场景怎么发
+
+- **Trusted Publishing（OIDC）**：在 npm 包里绑定 GitHub Actions，由工作流身份直接发布，不需要任何长期令牌；
+- **Staged publishing**：先 `pnpm stage` 暂存，再由人用 2FA 批准，适合"机器准备、人把关"。
+
+#### 与 npm v12 的另一处无关影响
+
+npm v12 把 `allowScripts`、`--allow-git`、`--allow-remote` 的默认值改成了关闭。本插件**不受影响**：`package.json` 没有 `preinstall`/`install`/`postinstall` 脚本，也没有 git 或远程 tarball 依赖（`dependencies` 为空）。
 
 ### 3.3 手动等价步骤
 
