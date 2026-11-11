@@ -2,7 +2,11 @@
 
 维护者文档：怎么把插件发到 GitHub、npm，并让它出现在 DSH 插件市场里。
 
-> **当前状态（2026-11-11）**：只做了 **GitHub** 这一步（仓库 <https://github.com/yusheng-zhu12/dsh-workspace-memory>，标签 `v0.2.0`）。**npm 与插件市场上架暂缓**，所以第 3、4 节先留着备查，不代表已执行；使用者的安装方式见 [README.md](README.md#安装)。
+> **当前状态（2026-11-11）**：只做了 **GitHub** 这一步（仓库 <https://github.com/yusheng-zhu12/dsh-workspace-memory>，标签 `v0.2.1`）。
+>
+> **npm 与插件市场上架已决定暂缓**（不是做不了，是暂时不做）。第 3、4 节保留完整流程备查，恢复时按那里执行即可；市场投稿材料已备好，放在 `D:\dsh-plugin\market-pr\`（条目 YAML、PR 双语正文、步骤清单）。
+>
+> 恢复市场投稿前必须先建 `v0.2.1` 的 GitHub Release 并附上 `dist\yusheng-zhu12-dsh-workspace-memory-0.2.1.tgz`，否则条目里的 `tarball:` 会 404。
 
 面向使用者的安装步骤在 [README.md](README.md#安装)。
 
