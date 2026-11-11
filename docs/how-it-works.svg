@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How workspace memory flows between two conversations in the same workspace">
+  <title>Workspace memory flow</title>
+  <desc>Session A saves conclusions to one Markdown file in the workspace; session B, opened later in the same workspace, receives a short index and reads the note on demand.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-dashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="1198" height="518" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="48" y="54" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="19" font-weight="600" fill="#0f172a">同一个工作区 · 一份记忆文件</text>
+  <text x="48" y="80" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="14" fill="#64748b">会话 A 写下的结论，会话 B 不用重读代码就能接着用</text>
+
+  <!-- Session A -->
+  <rect x="48" y="128" width="272" height="176" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="72" y="162" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="600" fill="#0f172a">会话 A</text>
+  <text x="72" y="190" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="13" fill="#475569">读源码、做分析</text>
+  <rect x="72" y="206" width="176" height="30" rx="8" fill="#e0e7ff" stroke="#a5b4fc"/>
+  <text x="84" y="226" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="13" fill="#3730a3">memory_save</text>
+  <text x="72" y="262" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="12" fill="#64748b">mode: replace / append</text>
+  <text x="72" y="282" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="12" fill="#64748b">落盘前脱敏 · 原子写</text>
+
+  <!-- arrow A -> file -->
+  <line x1="320" y1="216" x2="452" y2="216" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="330" y="202" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="12" fill="#475569">写入</text>
+
+  <!-- memory file -->
+  <rect x="470" y="112" width="264" height="208" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+  <path d="M 470 112 L 470 112" stroke="none"/>
+  <text x="492" y="144" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="13" font-weight="600" fill="#92400e">.dsh-memory/MEMORY.md</text>
+  <line x1="492" y1="156" x2="712" y2="156" stroke="#fcd34d" stroke-width="2"/>
+  <text x="492" y="180" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="12" fill="#78350f">## auth: token refresh</text>
+  <text x="492" y="200" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="12" fill="#a16207">**Summary:** …</text>
+  <text x="492" y="228" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="12" fill="#78350f">## build: release</text>
+  <text x="492" y="248" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="12" fill="#a16207">**Summary:** …</text>
+  <text x="492" y="276" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="12" fill="#78350f">## deploy: rollout</text>
+  <text x="492" y="296" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="11" fill="#92400e">可读、可手改、可提交进 git</text>
+
+  <!-- backup -->
+  <rect x="486" y="332" width="232" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+  <text x="500" y="352" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="12" fill="#475569">MEMORY.md.bak（上一代）</text>
+
+  <!-- arrow file -> B : index -->
+  <line x1="734" y1="186" x2="872" y2="186" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="742" y="172" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="12" fill="#475569">每步注入索引</text>
+  <text x="742" y="206" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="11" fill="#94a3b8">标题 + 摘要 + 路径</text>
+
+  <!-- Session B -->
+  <rect x="872" y="128" width="280" height="176" rx="12" fill="#f0fdfa" stroke="#99f6e4" stroke-width="2"/>
+  <text x="896" y="162" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="17" font-weight="600" fill="#0f172a">会话 B（新会话）</text>
+  <text x="896" y="190" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="13" fill="#475569">启动即看到索引，不用重读代码</text>
+  <rect x="896" y="206" width="232" height="30" rx="8" fill="#ccfbf1" stroke="#5eead4"/>
+  <text x="908" y="226" font-family="ui-monospace, 'Cascadia Mono', Consolas, monospace" font-size="13" fill="#115e59">memory_read(topic)</text>
+  <text x="896" y="262" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="12" fill="#64748b">需要细节时才读正文</text>
+  <text x="896" y="282" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="12" fill="#64748b">未读过就 replace → 被拒绝</text>
+
+  <!-- dashed arrow B -> file : read -->
+  <line x1="872" y1="250" x2="734" y2="250" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow-dashed)"/>
+
+  <!-- footer notes -->
+  <line x1="48" y1="396" x2="1152" y2="396" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="48" y="426" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="13" fill="#334155">• 覆盖前必须先读：读标记按会话、按笔记内容指纹记录</text>
+  <text x="48" y="452" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="13" fill="#334155">• 每次修改保留一份 .bak，可用 memory_restore 回滚一步</text>
+  <text x="48" y="478" font-family="ui-sans-serif, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="13" fill="#334155">• 到上限时列出候选主题，由用户决定合并、删除或调高上限</text>
+</svg>

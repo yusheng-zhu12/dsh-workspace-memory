@@ -9,6 +9,10 @@
 1. 提供 `memory_save` / `memory_read` / `memory_list` / `memory_forget` / `memory_restore` / `memory_limits` 六个工具，读写工作区内的 `.dsh-memory/MEMORY.md`。
 2. 在每个会话的运行时上下文里注入一段很短的记忆索引（标题 + 一句摘要 + 文件路径），让后续对话知道「这个工作区里已经有前人的结论」。
 
+![工作区记忆如何流动：会话 A 写入，会话 B 读到索引并按需读正文](docs/how-it-works.png)
+
+<sub>图示源码：[`docs/how-it-works.svg`](docs/how-it-works.svg)（可编辑，随 README 一起版本化）。</sub>
+
 > **第一次使用？** 直接跳到 [怎么用](#怎么用)：里面有可以复制给模型的第一次建立、后续追加的说法，以及必须知道的注意事项。
 
 ---
@@ -36,11 +40,11 @@
 
 ### 方式一：从 Release 的安装包安装（推荐，已验证）
 
-1. 打开仓库的 **Releases** 页，下载 `yusheng-zhu12-dsh-workspace-memory-0.2.0.tgz`（如果该 Release 还没有附件，改用方式二）；
+1. 打开仓库的 **Releases** 页，下载 `yusheng-zhu12-dsh-workspace-memory-0.2.1.tgz`（如果该 Release 还没有附件，改用方式二）；
 2. 放到任意目录，然后在会话里让 agent 执行：
 
 ```text
-plugin_manager install_bundle({ target: "D:\\path\\to\\yusheng-zhu12-dsh-workspace-memory-0.2.0.tgz" })
+plugin_manager install_bundle({ target: "D:\\path\\to\\yusheng-zhu12-dsh-workspace-memory-0.2.1.tgz" })
 ```
 
 实测：解包安装后 `node_modules/@yusheng-zhu12/dsh-workspace-memory` 是真实目录（不是链接），内容与 tarball 清单一致，`application: applied`，六个工具可用。卸载不会影响仓库或任何源码。

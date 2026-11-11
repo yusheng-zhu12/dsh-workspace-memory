@@ -4,6 +4,15 @@ All notable changes to this plugin are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-11-11
+
+### Added
+
+- A flow diagram at the top of the README (`docs/how-it-works.svg`, rendered to
+  `docs/how-it-works.png`): session A writes to the workspace file, session B
+  receives the index and reads the note on demand. Both files ship in the package
+  so the image also renders where the README is shown outside GitHub.
+
 ## [0.2.0] - 2026-11-11
 
 ### Changed

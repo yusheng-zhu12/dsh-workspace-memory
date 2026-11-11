@@ -1,6 +1,6 @@
 {
   "name": "@yusheng-zhu12/dsh-workspace-memory",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Workspace-scoped durable memory for DeepSeek Harness: readable Markdown notes in the workspace plus an automatically injected index for later conversations.",
   "type": "module",
   "main": "lib/index.js",
@@ -15,6 +15,8 @@
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
+    "docs/*.png",
+    "docs/*.svg",
     "README.md",
     "PUBLISHING.md",
     "CHANGELOG.md",
