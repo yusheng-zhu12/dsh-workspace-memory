@@ -36,14 +36,14 @@
 
 ### 方式一：从 Release 的安装包安装（推荐，已验证）
 
-1. 打开仓库的 **Releases** 页，下载 `dsh-workspace-memory-0.1.7.tgz`（如果该 Release 还没有附件，改用方式二）；
+1. 打开仓库的 **Releases** 页，下载 `yusheng-zhu12-dsh-workspace-memory-0.2.0.tgz`（如果该 Release 还没有附件，改用方式二）；
 2. 放到任意目录，然后在会话里让 agent 执行：
 
 ```text
-plugin_manager install_bundle({ target: "D:\\path\\to\\dsh-workspace-memory-0.1.7.tgz" })
+plugin_manager install_bundle({ target: "D:\\path\\to\\yusheng-zhu12-dsh-workspace-memory-0.2.0.tgz" })
 ```
 
-实测：解包安装后 `node_modules/dsh-workspace-memory` 是真实目录（不是链接），内容与 tarball 清单一致，`application: applied`，六个工具可用。卸载不会影响仓库或任何源码。
+实测：解包安装后 `node_modules/@yusheng-zhu12/dsh-workspace-memory` 是真实目录（不是链接），内容与 tarball 清单一致，`application: applied`，六个工具可用。卸载不会影响仓库或任何源码。
 
 ### 方式二：从仓库目录安装
 
@@ -82,7 +82,7 @@ plugin_manager install_bundle({ target: "D:\\dsh-plugin\\dsh-workspace-memory" }
 ### 安装后确认
 
 ```text
-plugin_manager list_bundles()          # 应有 dsh-workspace-memory，enabled: true
+plugin_manager list_bundles()          # 应有 @yusheng-zhu12/dsh-workspace-memory，enabled: true
 cordis_inspect_query Tool.listTools()  # 应有 memory_save/read/list/forget/restore/limits
 ```
 
@@ -92,9 +92,9 @@ cordis_inspect_query Tool.listTools()  # 应有 memory_save/read/list/forget/res
 
 ### 启用、停用与卸载
 
-- **停用**：`plugin_manager set_bundle({ target: "dsh-workspace-memory", enabled: false })` —— 工具与注入的索引一起消失，记忆文件原样留在工作区。
+- **停用**：`plugin_manager set_bundle({ target: "@yusheng-zhu12/dsh-workspace-memory", enabled: false })` —— 工具与注入的索引一起消失，记忆文件原样留在工作区。
 - **重新启用**：`enabled: true` 即可恢复，不需要重启 DSH。
-- **卸载**：`plugin_manager remove_bundle({ target: "dsh-workspace-memory" })`。**注意上面那条 ⚠️**：目录链接安装会被清空源码。
+- **卸载**：`plugin_manager remove_bundle({ target: "@yusheng-zhu12/dsh-workspace-memory" })`。**注意上面那条 ⚠️**：目录链接安装会被清空源码。
 - 卸载**不会**删除工作区里的 `.dsh-memory/`；要彻底清除请手动删掉该目录。
 
 ---
@@ -554,7 +554,7 @@ Read a topic with memory_read, or read the file directly.
 
 ```yaml
 - id: workspace-memory
-  name: dsh-workspace-memory
+  name: '@yusheng-zhu12/dsh-workspace-memory'
   config:
     injectBudget: 800
     redact: true

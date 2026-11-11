@@ -1,8 +1,11 @@
-# dsh-workspace-memory · bundle composition
+# @yusheng-zhu12/dsh-workspace-memory · bundle composition
 #
 # This patch inserts one Host plugin row. Configuration defaults live in
 # lib/config.js; override them from the profile's own cordis.patch.yml with
 # a matching `id` + `name` row (see README).
+#
+# `name` must match the package name in package.json exactly, or the loader
+# cannot resolve the module.
 - insert:
     - id: workspace-memory
-      name: dsh-workspace-memory
+      name: '@yusheng-zhu12/dsh-workspace-memory'

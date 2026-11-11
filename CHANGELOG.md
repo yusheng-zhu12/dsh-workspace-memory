@@ -4,7 +4,21 @@ All notable changes to this plugin are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-11-11
+## [0.2.0] - 2026-11-11
+
+### Changed
+
+- **Package renamed to `@yusheng-zhu12/dsh-workspace-memory`.** The unscoped name
+  `dsh-workspace-memory` is already published on npm by another author, so the
+  plugin could never be installed by that name without ambiguity. `package.json`
+  and `cordis.patch.yml` now carry the scoped name; the loader row id stays
+  `workspace-memory`, the repository keeps its name, and the release tarball is
+  now `yusheng-zhu12-dsh-workspace-memory-<version>.tgz`.
+- Installing, disabling, or removing the bundle now uses the scoped name, e.g.
+  `plugin_manager remove_bundle({ target: "@yusheng-zhu12/dsh-workspace-memory" })`.
+  An install of the old name should be removed before installing this one.
+
+## [0.1.7] - 2026-11-11
 
 First public release.
 

@@ -2,7 +2,7 @@
 
 维护者文档：怎么把插件发到 GitHub、npm，并让它出现在 DSH 插件市场里。
 
-> **当前状态（2026-11-11）**：只做了 **GitHub** 这一步（仓库 <https://github.com/yusheng-zhu12/dsh-workspace-memory>，标签 `v0.1.7`）。**npm 与插件市场上架暂缓**，所以第 3、4 节先留着备查，不代表已执行；使用者的安装方式见 [README.md](README.md#安装)。
+> **当前状态（2026-11-11）**：只做了 **GitHub** 这一步（仓库 <https://github.com/yusheng-zhu12/dsh-workspace-memory>，标签 `v0.2.0`）。**npm 与插件市场上架暂缓**，所以第 3、4 节先留着备查，不代表已执行；使用者的安装方式见 [README.md](README.md#安装)。
 
 面向使用者的安装步骤在 [README.md](README.md#安装)。
 
@@ -25,7 +25,7 @@ Get-ChildItem package.json, CHANGELOG.md, README.md -Recurse |
 
 | 字段 | 说明 |
 |---|---|
-| `name` | npm 包名，默认 `dsh-workspace-memory`；被占用就换一个（例如 `@your-scope/dsh-workspace-memory`），`cordis.patch.yml` 里的 `name` 也要同步 |
+| `name` | npm 包名，当前为 `@yusheng-zhu12/dsh-workspace-memory`（无 scope 的 `dsh-workspace-memory` 已被他人占用）；`cordis.patch.yml` 里的 `name` 必须与它完全一致 |
 | `version` | 语义化版本，每次发布必须递增 |
 | `private` | **不能有**，否则 `npm publish` 拒绝 |
 | `dsh.bundle.patch` | 指向 `./cordis.patch.yml`，市场与 `install_bundle` 都靠它 |
@@ -44,7 +44,7 @@ $pnpm = "C:\Users\TJ_ZYS\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm
 & $node $pnpm pack --pack-destination ..\dist
 ```
 
-产物：`dist\dsh-workspace-memory-<version>.tgz`。它会打印 `Tarball Contents`，核对一下应包含：
+产物：`dist\yusheng-zhu12-dsh-workspace-memory-<version>.tgz`。它会打印 `Tarball Contents`，核对一下应包含：
 
 ```
 CHANGELOG.md  cordis.patch.yml  icon.svg  LICENSE  package.json  PUBLISHING.md  README.md
@@ -63,7 +63,7 @@ lib/*.js  locale/en.json  locale/zh.json
 
 ## 2. 上传到 GitHub
 
-仓库已经初始化好（`main` 分支、首个提交、`v0.1.7` 标签、`origin` 已指向 `yusheng-zhu12/dsh-workspace-memory`），所以只剩推送。
+仓库已经初始化好（`main` 分支、首个提交、`v0.2.0` 标签、`origin` 已指向 `yusheng-zhu12/dsh-workspace-memory`），所以只剩推送。
 
 ### 2.1 在网页上建空仓库（英文界面）
 
@@ -91,10 +91,10 @@ git push -u origin main --tags
 ### 2.4 建 Release
 
 1. 仓库右侧 **Releases** → **Draft a new release**；
-2. **Choose a tag** 选已存在的 `v0.1.7`（不要新建）；
-3. **Release title** 填 `v0.1.7`；
+2. **Choose a tag** 选已存在的 `v0.2.0`（不要新建）；
+3. **Release title** 填 `v0.2.0`；
 4. 描述里粘贴 `CHANGELOG.md` 的 `## [0.1.7]` 小节；
-5. **Attach binaries** 上传 `dist\dsh-workspace-memory-0.1.7.tgz`（方便离线安装）；
+5. **Attach binaries** 上传 `dist\yusheng-zhu12-dsh-workspace-memory-0.2.0.tgz`（方便离线安装）；
 6. 点 **Publish release**。
 
 之后每次更新：
@@ -172,7 +172,7 @@ $pnpm = "C:\Users\TJ_ZYS\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm
 
 # 确认身份与包名
 & $node $pnpm whoami
-& $node $pnpm view dsh-workspace-memory version   # 报 404 说明包名可用
+& $node $pnpm view @yusheng-zhu12/dsh-workspace-memory version   # 报 404 说明包名可用
 
 # 发布（账号开了 2FA 时加 --otp <当时代码>）
 cd D:\dsh-plugin\dsh-workspace-memory
@@ -184,12 +184,12 @@ cd D:\dsh-plugin\dsh-workspace-memory
 ### 3.4 验证
 
 ```powershell
-& $node $pnpm view dsh-workspace-memory version
+& $node $pnpm view @yusheng-zhu12/dsh-workspace-memory version
 ```
 
 返回 `0.1.7` 即发布成功。之后更新只需递增 `version` 再跑同一脚本。
 
-> 如果包名被占用，改成 `@<scope>/dsh-workspace-memory` 发布，并把 `cordis.patch.yml` 的 `name` 一起改掉。
+> 包名已改为 `@yusheng-zhu12/dsh-workspace-memory`（原 `dsh-workspace-memory` 被他人占用）。改包名时 `package.json` 与 `cordis.patch.yml` 必须同步。
 
 ---
 
@@ -202,7 +202,7 @@ DSH 的插件市场（`dshmarket` / Plugins → Discover）**不直接搜 npm**�
 步骤：
 
 1. 打开 <https://github.com/awesome-dsh-plugin/awesome-dsh-plugin>，先读它的 `README` / `CONTRIBUTING`，照现有条目的格式写（不同时间格式可能变，以仓库现状为准）。
-2. 条目里至少要能对上：显示名、npm 包名（`dsh-workspace-memory`）、GitHub 仓库地址、一句话描述、分类/标签。
+2. 条目里至少要能对上：显示名、npm 包名（`@yusheng-zhu12/dsh-workspace-memory`）、GitHub 仓库地址、一句话描述、分类/标签。
 3. 提交 PR，说明这是 DSH Host 插件、已发布到 npm、仓库公开。
 4. 合并后等 CI 刷新 `plugins.json`，然后在 DSH 里 **Plugins → Discover** 搜索验证。
 
