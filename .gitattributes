@@ -1,0 +1,5 @@
+# Keep the repository LF-only so the plugin behaves the same on every platform.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
