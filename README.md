@@ -32,54 +32,63 @@
 
 本插件是 DeepSeek Harness 的 Cordis bundle，不依赖第三方运行时包（`dependencies` 为空），只要求 Node ≥ 22 与 DSH ≥ 0.2.2-rc.1（实测版本）。
 
-### 方式一：从插件市场（推荐，上架后可用）
+> **当前只通过 GitHub 分发**（<https://github.com/yusheng-zhu12/dsh-workspace-memory>）。npm 与插件市场尚未发布，下面几种方式任选其一。
 
-1. 打开 **Plugins → Discover**；
-2. 搜 `workspace memory`；
-3. 点安装，然后按提示启用。
+### 方式一：从 Release 的安装包安装（推荐，已验证）
 
-市场里搜不到时，先在 **Discover → Index sources** 添加官方目录源（见 [PUBLISHING.md](PUBLISHING.md#上架插件市场)）。
+1. 打开仓库的 **Releases** 页，下载 `dsh-workspace-memory-0.1.7.tgz`（如果该 Release 还没有附件，改用方式二）；
+2. 放到任意目录，然后在会话里让 agent 执行：
 
-### 方式二：从 npm 安装（已发布后）
+```text
+plugin_manager install_bundle({ target: "D:\\path\\to\\dsh-workspace-memory-0.1.7.tgz" })
+```
+
+实测：解包安装后 `node_modules/dsh-workspace-memory` 是真实目录（不是链接），内容与 tarball 清单一致，`application: applied`，六个工具可用。卸载不会影响仓库或任何源码。
+
+### 方式二：从仓库目录安装
+
+先把仓库取到本地（任选其一）：
 
 ```bash
-dsh plugin --profile desktop add dsh-workspace-memory
+git clone https://github.com/yusheng-zhu12/dsh-workspace-memory.git
 ```
 
-或在会话里让 agent 执行：
+或在仓库页面点 **Code → Download ZIP** 后解压。然后：
 
 ```text
-plugin_manager install_bundle({ target: "dsh-workspace-memory" })
+plugin_manager install_bundle({ target: "D:\\path\\to\\dsh-workspace-memory" })
 ```
 
-### 方式三：从本地安装包（.tgz，离线可用）
+安装的是**目录链接**，改源码后重新启用 bundle 即生效（无需重启）。
 
-把 `dsh-workspace-memory-<version>.tgz` 放到任意目录，然后：
+> ⚠️ **删除这种安装会删掉目录里的文件。** 实测对目录链接安装执行 `remove_bundle` 后，源目录内容被清空（`test/` 与 `.gitignore` 因此丢过一次，只能从 tarball 恢复）。用方式一安装的包不受影响；用方式二时请先确保目录已提交进 git。
+
+### 方式三：直接指向 git 仓库（未在本机验证）
 
 ```text
-plugin_manager install_bundle({ target: "D:\\path\\to\\dsh-workspace-memory-0.1.0.tgz" })
+plugin_manager install_bundle({ target: "github:yusheng-zhu12/dsh-workspace-memory" })
 ```
 
-实测：解包安装后 `node_modules/dsh-workspace-memory` 是真实目录（不是链接），内容与 tarball 清单一致，`application: applied`，六个工具可用。
+这条依赖 pnpm 的 git 解析，需要网络能访问 GitHub。**本机当前连不上 github.com，所以没有实测**；失败就用方式一或方式二。
 
-### 方式四：从源码目录（开发用）
+### 方式四：开发用（本地源码目录）
 
 ```text
 plugin_manager install_bundle({ target: "D:\\dsh-plugin\\dsh-workspace-memory" })
 ```
 
-安装的是目录链接，改源码后重新启用 bundle 即生效（无需重启）。
-
-> ⚠️ **删除这个安装会删掉源码目录的内容。** 实测对目录链接安装执行 `remove_bundle` 后，`D:\dsh-plugin\dsh-workspace-memory` 里的文件被清空（`test/` 与 `.gitignore` 因此丢失，只能从 tarball 恢复）。用方式一/二/三安装的包不受影响。开发时请先把源码提交进 git，或改用 tarball 安装再卸载。
+与方式二相同，是目录链接，注意上面那条 ⚠️。
 
 ### 安装后确认
 
 ```text
 plugin_manager list_bundles()          # 应有 dsh-workspace-memory，enabled: true
-cordis_inspect_query Tool.listTools()  # 应有 memory_save/read/list/forget/restore
+cordis_inspect_query Tool.listTools()  # 应有 memory_save/read/list/forget/restore/limits
 ```
 
 工具齐全后，工作区里说一句「记一下……」即可开始，见 [怎么用](#怎么用)。
+
+> 装好后如果工具没出现，重启一次 DSH——替换或首次安装的模块不会在运行中的进程里热加载。
 
 ### 启用、停用与卸载
 
